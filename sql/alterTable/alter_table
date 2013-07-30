@@ -1,0 +1,87 @@
+vinsol-dell-1525-silver ~ # mysql -h localhost -p -u root
+Enter password: 
+
+mysql> create database sample;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use sample;
+Database changed
+
+mysql> create table testing_table(
+    -> name varChar(10),
+    -> contact_name varChar(10),
+    -> roll_no varChar(10));
+Query OK, 0 rows affected (0.17 sec)
+
+mysql> show create table testing_table\g;
+                                                                   |
++---------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| testing_table | CREATE TABLE `testing_table` (
+  `name` varchar(10) DEFAULT NULL,
+  `contact_name` varchar(10) DEFAULT NULL,
+  `roll_no` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 |
++---------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+
+
+mysql> alter table testing_table drop column name;
+Query OK, 0 rows affected (0.36 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show create table testing_table\g;
+
++---------------+-------------------------------------------------------------------------------------------------------------------------------------------------------+
+| testing_table | CREATE TABLE `testing_table` (
+  `contact_name` varchar(10) DEFAULT NULL,
+  `roll_no` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 |
++---------------+-------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> alter table testing_table change contact_name username varChar(10);
+Query OK, 0 rows affected (0.35 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show create table testing_table\g;
+
++---------------+---------------------------------------------------------------------------------------------------------------------------------------------------+
+| testing_table | CREATE TABLE `testing_table` (
+  `username` varchar(10) DEFAULT NULL,
+  `roll_no` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 |
++---------------+---------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> alter table testing_table add column first_name varChar(10), add column last_name varChar(10);
+Query OK, 0 rows affected (0.34 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show create table testing_table\g;
+
++---------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| testing_table | CREATE TABLE `testing_table` (
+  `username` varchar(10) DEFAULT NULL,
+  `roll_no` varchar(10) DEFAULT NULL,
+  `first_name` varchar(10) DEFAULT NULL,
+  `last_name` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 |
++---------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> alter table testing_table modify roll_no int;
+Query OK, 0 rows affected (0.28 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> show create table testing_table\g;
+
++---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| testing_table | CREATE TABLE `testing_table` (
+  `username` varchar(10) DEFAULT NULL,
+  `roll_no` int(11) DEFAULT NULL,
+  `first_name` varchar(10) DEFAULT NULL,
+  `last_name` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 |
++---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
