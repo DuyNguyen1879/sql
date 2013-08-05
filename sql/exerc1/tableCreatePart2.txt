@@ -1,0 +1,109 @@
+mysql> CREATE TABLE branc(
+    -> bcode varchar(2),
+    -> librarian varchar(20),
+    -> address varchar(20),
+    -> PRIMARY KEY (bcode)
+    -> );
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> DESC branch;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| bcode     | varchar(2)  | NO   | PRI |         |       |
+| librarian | varchar(20) | YES  |     | NULL    |       |
+| address   | varchar(20) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO branch VALUES ('b1', 'john smith', '2 anglesea rd'),('b2','mary jones','34 pearse st'),
+                                 ('b3', 'francis owens', 'grange x');
+Query OK, 3 rows affected (0.06 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM branch;
++-------+---------------+---------------+
+| bcode | librarian     | address       |
++-------+---------------+---------------+
+| b1    | john smith    | 2 anglesea rd |
+| b2    | mary jones    | 34 pearse st  |
+| b3    | francis owens | grange x      |
++-------+---------------+---------------+
+3 rows in set (0.00 sec)
+
+
+
+mysql> CREATE TABLE titles( title varchar(20), author varchar(20), publisher varchar(20), PRIMARY KEY (title) );
+Query OK, 0 rows affected (0.18 sec)
+
+mysql> DESC titles;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| title     | varchar(20) | NO   | PRI |         |       |
+| author    | varchar(20) | YES  |     | NULL    |       |
+| publisher | varchar(20) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO titles VALUES ('susannah', 'ann brown', 'macmillan'),('how to fish','amy fly','stop press'),
+                                 ('a history of dublin', 'david little', 'wiley'),('computers', 'blaise pascal', 'applewoods'),
+                                 ('the wife', 'ann brown' , 'macmillan');
+Query OK, 5 rows affected (0.05 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM titles;
++---------------------+---------------+------------+
+| title               | author        | publisher  |
++---------------------+---------------+------------+
+| a history of dublin | david little  | wiley      |
+| computers           | blaise pascal | applewoods |
+| how to fish         | amy fly       | stop press |
+| susannah            | ann brown     | macmillan  |
+| the wife            | ann brown     | macmillan  |
++---------------------+---------------+------------+
+5 rows in set (0.00 sec)
+
+
+
+
+mysql> CREATE TABLE holdings( branch varchar(2), title varchar(20), copies int(2),
+    -> PRIMARY KEY(branch, title),
+    -> FOREIGN KEY (branch) REFERENCES branch(bcode),
+    -> FOREIGN KEY (title) REFERENCES titles(title)
+    -> );
+Query OK, 0 rows affected (0.25 sec)
+
+mysql> DESC holdings;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| branch | varchar(2)  | NO   | PRI |         |       |
+| title  | varchar(20) | NO   | PRI |         |       |
+| copies | int(2)      | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO holdings VALUES ('b1', 'susannah', 3),('b1', 'how to fish', 2),('b1', 'a history of dublin', 1), 
+                                   ('b2', 'how to fish', 4),('b2', 'computers', 2),('b2', 'the wife', 3),
+                                   ('b3', 'a history of dublin', 1),('b3', 'computers', 4),('b3', 'susannah', 3),
+                                   ('b3', 'the wife', 1);
+Query OK, 10 rows affected (0.11 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM holdings;
++--------+---------------------+--------+
+| branch | title               | copies |
++--------+---------------------+--------+
+| b1     | a history of dublin |      1 |
+| b1     | how to fish         |      2 |
+| b1     | susannah            |      3 |
+| b2     | computers           |      2 |
+| b2     | how to fish         |      4 |
+| b2     | the wife            |      3 |
+| b3     | a history of dublin |      1 |
+| b3     | computers           |      4 |
+| b3     | susannah            |      3 |
+| b3     | the wife            |      1 |
++--------+---------------------+--------+
+10 rows in set (0.00 sec)

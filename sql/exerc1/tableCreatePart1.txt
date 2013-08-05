@@ -1,0 +1,123 @@
+mysql> CREATE TABLE tastes (
+    -> name varchar(10),
+    -> filling varchar(10),
+    -> PRIMARY KEY (name,filling)
+    -> );
+Query OK, 0 rows affected (0.19 sec)
+
+mysql> DESC tastes;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| name    | varchar(10) | NO   | PRI |         |       |
+| filling | varchar(10) | NO   | PRI |         |       |
++---------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> INSERT INTO tastes VALUES ('brown','turkey'),('brown','beef'),('brown','ham'),('jones','cheese'),
+                                 ('green','beef'),'green','turkey'),('green','cheese');
+
+Query OK, 7 rows affected (0.06 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM tastes;
++-------+---------+
+| name  | filling |
++-------+---------+
+| brown | beef    |
+| brown | ham     |
+| brown | turkey  |
+| green | beef    |
+| green | cheese  |
+| green | turkey  |
+| jones | cheese  |
++-------+---------+
+7 rows in set (0.00 sec)
+
+
+
+
+
+mysql> CREATE TABLE locations ( 
+    -> lname varchar(10), 
+    -> phone int(10), 
+    -> address varchar(20),
+    -> PRIMARY KEY (lname)
+    -> );
+Query OK, 0 rows affected (0.17 sec)
+
+mysql> INSERT INTO locations VALUES ('lincoln', 6834567, 'lincoln palace'),("o'neill's", 6834534, 'pearse st'),   
+                                    ('old nag', 6823567, 'dame st'),('buttery', 6984567, 'college st');
+Query OK, 4 rows affected (0.10 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+
+mysql> SELECT * FROM locations;
++-----------+---------+----------------+
+| lname     | phone   | address        |
++-----------+---------+----------------+
+| buttery   | 6984567 | college st     |
+| lincoln   | 6834567 | lincoln palace |
+| o'neill's | 6834534 | pearse st      |
+| old nag   | 6823567 | dame st        |
++-----------+---------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> DESC locations;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| lname   | varchar(10) | NO   | PRI |         |       |
+| phone   | int(10)     | YES  |     | NULL    |       |
+| address | varchar(20) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+
+
+mysql> CREATE TABLE sandwiches ( 
+    -> location varchar(10),
+    -> bread varchar(7),
+    -> filling varchar(10),
+    -> price decimal(5,2),
+    -> PRIMARY KEY (location,bread,filling),
+    -> FOREIGN KEY (location) REFERENCES locations(lname)
+    -> );
+Query OK, 0 rows affected (0.17 sec)
+
+mysql> desc sandwiches;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| location | varchar(10)  | NO   | PRI |         |       |
+| bread    | varchar(7)   | NO   | PRI |         |       |
+| filling  | varchar(10)  | NO   | PRI |         |       |
+| price    | decimal(5,2) | YES  |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> INSERT INTO sandwiches VALUES ('lincoln', 'rye', 'ham', 1.25),("o'neill's", 'white', 'cheese',1.20 ),  
+                                     ("o'neill's", 'whole', 'ham', 1.25),('old nag', 'rye', 'beef', 1.35), 
+                                     ('buttery', 'white', 'cheese', 1.00),("o'neill's", 'white', 'turkey',1.35 ),
+                                     ('buttery', 'white', 'ham', 1.10),('lincoln', 'rye', 'beef', 1.35),
+                                     ('lincoln', 'white', 'ham', 1.30),('old nag', 'rye', 'ham', 1.40);
+
+Query OK, 10 rows affected (0.15 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM sandwiches;
++-----------+-------+---------+-------+
+| location  | bread | filling | price |
++-----------+-------+---------+-------+
+| buttery   | white | cheese  |  1.00 |
+| buttery   | white | ham     |  1.10 |
+| lincoln   | rye   | beef    |  1.35 |
+| lincoln   | rye   | ham     |  1.25 |
+| lincoln   | white | ham     |  1.30 |
+| o'neill's | white | cheese  |  1.20 |
+| o'neill's | white | turkey  |  1.35 |
+| o'neill's | whole | ham     |  1.25 |
+| old nag   | rye   | beef    |  1.35 |
+| old nag   | rye   | ham     |  1.40 |
++-----------+-------+---------+-------+
+10 rows in set (0.00 sec)

@@ -1,0 +1,41 @@
+mysql> SELECT title FROM titles WHERE  publisher = 'macmillan';
++----------+
+| title    |
++----------+
+| susannah |
+| the wife |
++----------+
+2 rows in set (0.11 sec)
+
+
+mysql> SELECT DISTINCT h.branch FROM holdings AS h WHERE title IN ( SELECT t.title FROM titles AS t WHERE author = 'ann brown'); 
++--------+
+| branch |
++--------+
+| b1     |
+| b2     |
+| b3     |
++--------+
+3 rows in set (0.00 sec)
+
+
+mysql> SELECT DISTINCT branch FROM holdings NATURAL JOIN titles WHERE author = 'ann brown'; 
++--------+
+| branch |
++--------+
+| b1     |
+| b3     |
+| b2     |
++--------+
+3 rows in set (0.00 sec)
+
+
+mysql> SELECT branch, SUM(copies) FROM holdings GROUP BY 1;
++--------+-------------+
+| branch | SUM(copies) |
++--------+-------------+
+| b1     |           6 |
+| b2     |           9 |
+| b3     |           9 |
++--------+-------------+
+3 rows in set (0.06 sec)
