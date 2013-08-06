@@ -1,0 +1,143 @@
+Q1: What do different columns in the output of EXPLAIN mean? What possible values can those have? What is the meaning of those values?
+ANS-->
+   id-    sequential number of select statement with in query
+
+   select type – select type based on whether select is a simple select statement, or a join or a union between two select statements.
+
+   table – name of table to which row of output refers . 
+
+   type- it implies type of join used in select statements .
+
+   possible_keys – This indicate the column which mysql can use to search in table using keys.
+
+   key – the key used for comparisons in searching
+
+   key_len – indicates the length of key that mysql decides to use.
+   
+   ref – this column shows which column or constant is compared to the index.
+
+   rows – it indicates the number of rows My SQL believes it must test to execute query.                        
+
+
+
+
+Q2: We use EXPLAIN to optimize slow SQL queries used in our application. Lets say we have a comments table in our application that has a foreign key, user_id, referencing to users table. EXPLAINing the query that finds all the comments made by a user gives us following result.
+
+    mysql> EXPLAIN SELECT * FROM comments WHERE user_id = 41;
+
+    +-------------+------+---------------+---------+-------+---------+-------------+
+    | select_type | type | key           | key_len | ref   | rows    | Extra       |
+    +-------------+------+---------------+---------+-------+---------+-------------+
+    | SIMPLE      | ALL  | NULL          | NULL    | NULL  | 1002345 | Using where |
+    +-------------+------+---------------+---------+-------+---------+-------------+
+
+    mysql> SELECT count(id) FROM comments;
+
+    +-----------+
+    | count(id) |
+    +-----------+
+    | 1002345   |
+    +-----------+
+
+
+
+  2.1 The value under 'rows' column in the output of EXPLAIN query and SELECT query after it are same. What does it mean?
+  ans-> it means that my sql has to traverse through every single row of the table for comparission "user_id =45". 
+
+  2.2 Is the SELECT query optimal? If no, how do we optimize it?
+  ans-> no, we can add index to the column user_id;
+
+
+
+
+
+
+Q3. In Rails world, we have someting called polymorphic associations (http://guides.rubyonrails.org/association_basics.html#polymorphic-associations). Lets say in our web application, we can let users comment on photographs and articles. Some of rows in comments table are represented as following:
+
+    mysql> SELECT * FROM comments LIMIT 5;
+
+    +----+------------------+----------------+---------+
+    | id | commentable_type | commentable_id | user_id |
+    +----+------------------+----------------+---------+
+    | 1  + Article          | 1              | 1       |
+    +----+------------------+----------------+---------+
+    | 2  + Photo            | 1              | 1       |
+    +----+------------------+----------------+---------+
+    | 3  + Photo            | 2              | 2       |
+    +----+------------------+----------------+---------+
+    | 4  + Photo            | 2              | 2       |
+    +----+------------------+----------------+---------+
+    | 5  + Article          | 1              | 2       |
+    +----+------------------+----------------+---------+
+
+    When we need to fetch comments of a user on a particular Article or Photo we form a query like:
+
+    mysql> EXPLAIN SELECT * FROM comments WHERE commentable_id = 1 AND commentable_type = 'Article' AND user_id = 1;
+
+    +-------------+------+---------------+---------+-------+---------+-------------+
+    | select_type | type | key           | key_len | ref   | rows    | Extra       |
+    +-------------+------+---------------+---------+-------+---------+-------------+
+    | SIMPLE      | ALL  | NULL          | NULL    | NULL  | 1000025 | Using where |
+    +-------------+------+---------------+---------+-------+---------+-------------+
+
+    It seems that we do not have any index on any of the columns. And whole comments table is scanned to fetch those comments.
+
+  3.1 We decide to index columns in comments table to optimize the SELECT query. What column(s) will you index in which order? Ask the exercise creator for a hint if you are confused.
+
+  ans-> we can use multiple column indexes like " index <index_name> (commmentable_id,commentable_type,user_id)" for the query like above which includes commentable_id search for droping the rows.
+
+
+
+
+Q4:
+4.1 EXPLAIN a SELECT query against one of your databases which employs an INNER JOIN between two tables. What does the output look like? What does the values under different columns mean? Do you get only one row in EXPLAIN's output?
+ans -> 
+      mysql> EXPLAIN SELECT DISTINCT branch FROM holdings NATURAL JOIN titles WHERE author = 'ann brown';
+      +----+-------------+----------+------+---------------+-------+---------+---------------------+------+------------------------------+
+      | id | select_type | table    | type | possible_keys | key   | key_len | ref                 | rows | Extra                        |
+      +----+-------------+----------+------+---------------+-------+---------+---------------------+------+------------------------------+
+      |  1 | SIMPLE      | titles   | ALL  | PRIMARY       | NULL  | NULL    | NULL                |    5 | Using where; Using temporary |
+      |  1 | SIMPLE      | holdings | ref  | title         | title | 22      | sample.titles.title |    1 | Using index                  |
+      +----+-------------+----------+------+---------------+-------+---------+---------------------+------+------------------------------+
+      2 rows in set (0.00 sec)
+
+ 
+ * we got two rows in explain output one for each table.
+ *  > select type - simple means that we are not using union or any subqueries.
+    > table - two tables used one for each.
+    > type 
+           > 1st row- a full table search is to be done for each value of first table.
+           > 2nd row - as rows with matching index values are read from this table for each combination of rows from the previous tables.
+    > possible keys - list of available keys in respective tables;
+    > key - key used while executing query. 
+    > key-length
+    > ref - columns used for indexed comparision. ie null in first case and title in second. 
+    > rows - show total number of rows mysql must read to execute this select statement which is 5 and 1 
+
+
+4.2 Form the same select query in above question using a subquery instead of a JOIN. What does the EXPLAIN output look like now? Which query is better and why?
+    ans --> 
+        EXPLAIN SELECT DISTINCT h.branch FROM holdings AS h WHERE title IN ( SELECT t.title FROM titles AS t WHERE author = 'ann brown');
+    +----+--------------------+-------+-----------------+---------------+---------+---------+------+------+--------------------------+
+    | id | select_type        | table | type            | possible_keys | key     | key_len | ref  | rows | Extra                    |
+    +----+--------------------+-------+-----------------+---------------+---------+---------+------+------+--------------------------+
+    |  1 | PRIMARY            | h     | index           | NULL          | PRIMARY | 26      | NULL |   10 | Using where; Using index |
+    |  2 | DEPENDENT SUBQUERY | t     | unique_subquery | PRIMARY       | PRIMARY | 22      | func |    1 | Using where              |
+    +----+--------------------+-------+-----------------+---------------+---------+---------+------+------+--------------------------+
+    2 rows in set (0.00 sec)
+
+    * we got two rows in explain output one for each table.
+ *  > select type - primary means outer most select
+                    DEPENDENT SUBQUERY it  is dependent on the primary select.
+    > table - two tables used one for each.
+    > type 
+           > 1st row- rows with matching index values are read from this table
+           > 2nd row - as rows with matching index values are read from this table for each combination of rows from the previous tables.
+    > possible keys - list of available keys in respective tables;
+    > key - key used while executing query. 
+    > key-length
+    > ref - columns used for indexed comparision. ie null in first case and title in second. 
+    > rows - show total number of rows mysql must read to execute this select statement which is 10 and 1.
+
+
+ JOIN QUERY IS BETTER THAN THE SUBQUERY AS IN LATER WE HAVE TO MATCH INDEX AGAINST 10 ROWS WHICH IS 5 IN JOIN CASE.    
