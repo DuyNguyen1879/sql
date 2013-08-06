@@ -1,0 +1,37 @@
+mysql> SELECT DISTINCT e.NAME FROM employees AS e LEFT JOIN present_proj AS p ON e.id = p.emp_id WHERE p_id IS NULL;
++--------+
+| NAME   |
++--------+
+| user b |
+| user c |
++--------+
+2 rows in set (0.00 sec)
+
+
+
+mysql> SELECT e.name FROM employees e WHERE e.id IN (SELECT DISTINCT emp_id FROM technologies t JOIN  proj_tech pt ON t.id = pt.tech_id NATURAL JOIN past_proj pp WHERE t.name IN ('html','javascript','ios') GROUP BY 1 having COUNT(DISTINCT t.name) >=3);
+
++--------+
+| name   |
++--------+
+| user a |
+| user b |
+| user c |
+| user d |
++--------+
+4 rows in set (0.00 sec)
+
+
+
+mysql> SELECT distinct t.name FROM technologies t JOIN  proj_tech pt ON t.id = pt.tech_id NATURAL JOIN past_proj where  emp_id in (select e.id from employees e  where e.name = "user b") group by t.name having count(t.name) >= 3;
+Empty set (0.00 sec)
+
+
+
+mysql> select e.name from employees e where e.id = (select pp.emp_id from proj_tech pt join technologies t on pt.tech_id = t.id and t.name = 'android' join past_proj pp on pp.p_id = pt.p_id group by pp.emp_id order by count(pt.p_id) desc limit 1);
++--------+
+| name   |
++--------+
+| user b |
++--------+
+1 row in set (0.00 sec)

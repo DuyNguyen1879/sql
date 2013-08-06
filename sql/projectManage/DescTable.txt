@@ -1,0 +1,58 @@
+mysql> DESC employees;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| id    | tinyint(4)  | NO   | PRI | NULL    | auto_increment |
+| name  | varchar(10) | YES  |     | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+2 rows in set (0.01 sec)
+
+
+mysql> DESC projects;
++-------+------------+------+-----+---------+----------------+
+| Field | Type       | Null | Key | Default | Extra          |
++-------+------------+------+-----+---------+----------------+
+| id    | tinyint(4) | NO   | PRI | NULL    | auto_increment |
+| name  | varchar(3) | YES  |     | NULL    |                |
++-------+------------+------+-----+---------+----------------+
+2 rows in set (0.00 sec)
+
+
+mysql> DESC technologies;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| id    | tinyint(4)  | NO   | PRI | NULL    | auto_increment |
+| name  | varchar(20) | YES  |     | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+2 rows in set (0.00 sec)
+
+
+mysql> DESC proj_tech;
++---------+------------+------+-----+---------+-------+
+| Field   | Type       | Null | Key | Default | Extra |
++---------+------------+------+-----+---------+-------+
+| p_id    | tinyint(4) | YES  | MUL | NULL    |       |
+| tech_id | tinyint(4) | YES  | MUL | NULL    |       |
++---------+------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+
+mysql> DESC past_proj;
++--------+------------+------+-----+---------+-------+
+| Field  | Type       | Null | Key | Default | Extra |
++--------+------------+------+-----+---------+-------+
+| p_id   | tinyint(4) | YES  | MUL | NULL    |       |
+| emp_id | tinyint(4) | YES  | MUL | NULL    |       |
++--------+------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+
+mysql> DESC present_proj;
++--------+------------+------+-----+---------+-------+
+| Field  | Type       | Null | Key | Default | Extra |
++--------+------------+------+-----+---------+-------+
+| p_id   | tinyint(4) | YES  | MUL | NULL    |       |
+| emp_id | tinyint(4) | YES  | MUL | NULL    |       |
++--------+------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
