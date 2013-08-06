@@ -1,0 +1,110 @@
+mysql> CREATE TABLE users (
+    -> name VARCHAR(20),
+    -> category ENUM('admin','normal'),
+    -> PRIMARY KEY (name)
+    -> );
+Query OK, 0 rows affected (0.16 sec)
+
+mysql> DESC users;
++----------+------------------------+------+-----+---------+-------+
+| Field    | Type                   | Null | Key | Default | Extra |
++----------+------------------------+------+-----+---------+-------+
+| name     | varchar(20)            | NO   | PRI |         |       |
+| category | enum('admin','normal') | YES  |     | NULL    |       |
++----------+------------------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> INSERT INTO users VALUES ('user1','admin'),('user2','normal'),('user3','admin'),('user4','normal'); 
+Query OK, 4 rows affected (0.06 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM users;
++-------+----------+
+| name  | category |
++-------+----------+
+| user1 | admin    |
+| user2 | normal   |
+| user3 | admin    |
+| user4 | normal   |
++-------+----------+
+4 rows in set (0.00 sec)
+
+
+
+mysql> CREATE TABLE articles ( article VARCHAR(20), author VARCHAR(20),category VARCHAR(20),
+mysql> FOREIGN KEY (author) REFERENCES users(name), PRIMARY KEY (article) );
+Query OK, 0 rows affected (0.16 sec)
+
+mysql> DESC articles;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| article  | varchar(20) | NO   | PRI |         |       |
+| author   | varchar(20) | YES  | MUL | NULL    |       |
+| category | varchar(20) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+
+mysql> INSERT INTO articles VALUES ('overspeed kills','user1','city'),('india won','user3','sports'),('congress loose','user3','political'),
+                                   ('fees hike','user4','educational'),('sachin retired','user1', 'sports');
+Query OK, 5 rows affected (0.05 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM articles;
++-----------------+--------+-------------+
+| article         | author | category    |
++-----------------+--------+-------------+
+| congress loose  | user3  | political   |
+| fees hike       | user4  | educational |
+| india won       | user3  | sports      |
+| overspeed kills | user1  | city        |
+| sachin retired  | user1  | sports      |
++-----------------+--------+-------------+
+5 rows in set (0.00 sec)
+
+
+
+mysql> CREATE TABLE comments ( article VARCHAR(20), comment VARCHAR(40), user VARCHAR(20),
+    -> FOREIGN KEY (article) REFERENCES articles(article),
+    -> FOREIGN KEY (user) REFERENCES users(name)
+    -> );
+Query OK, 0 rows affected (0.24 sec)
+
+mysql> DESC comments;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| article | varchar(20) | YES  | MUL | NULL    |       |
+| comment | varchar(40) | YES  |     | NULL    |       |
+| user    | varchar(20) | YES  | MUL | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO comments VALUES ('congress loose', 'bjp in power','user1'), ('fees hike','govt take action','user2'),('india won','by 5-0','user1'),
+    -> ('congress loose', 'bjp celebrates','user1'),('congress loose', 'nda came into power','user4'), ('fees hike','3 schools shut down','user2'),
+    -> ('india won', 'bangla loose', 'user3');
+
+Query OK, 7 rows affected (0.05 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM comments;
++----------------+---------------------+-------+
+| article        | comment             | user  |
++----------------+---------------------+-------+
+| congress loose | bjp in power        | user1 |
+| fees hike      | govt take action    | user2 |
+| india won      | by 5-0              | user1 |
+| congress loose | bjp celebrates      | user1 |
+| congress loose | nda came into power | user4 |
+| fees hike      | 3 schools shut down | user2 |
+| india won      | bangla loose        | user3 |
++----------------+---------------------+-------+
+7 rows in set (0.00 sec)
+
+
+
+
+
+
+
+
