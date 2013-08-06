@@ -1,0 +1,17 @@
+vinsol-dell-1525-silver / # mysqldump -u root -p sample > backup.sql
+Enter password: 
+
+
+vinsol-dell-1525-silver / # mysql -u root -p 
+Enter password: 
+
+
+mysql> create database restored;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> exit;
+Bye
+
+
+vinsol-dell-1525-silver / # mysql -u root -p restored < backup.sqlEnter
+password: 
