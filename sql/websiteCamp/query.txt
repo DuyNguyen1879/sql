@@ -1,0 +1,78 @@
+SELECT DISTINCT city FROM website_campain;
+
++-----------+
+| city      |
++-----------+
+|  Chennai  |
+|  Delhi    |
+|  Lucknow  |
+|  Mumbai   |
+|  Kolkatta |
++-----------+
+5 rows in set (0.00 sec)
+
+
+SELECT DISTINCT city, COUNT(email) AS respondent
+FROM website_campain
+GROUP BY(city);
+
++-----------+------------+
+| city      | respondent |
++-----------+------------+
+|  Chennai  |         42 |
+|  Delhi    |         40 |
+|  Kolkatta |         38 |
+|  Lucknow  |         39 |
+|  Mumbai   |         41 |
++-----------+------------+
+5 rows in set (0.00 sec)
+
+
+SELECT DISTINCT city
+FROM website_campain
+GROUP BY(city)
+HAVING count(email) = (
+						SELECT COUNT(email) AS totalCount
+						FROM website_campain
+						GROUP BY(city)
+						ORDER BY totalCount
+						DESC LIMIT 1
+						);
+						
++----------+
+| city     |
++----------+
+|  Chennai |
++----------+
+1 row in set (0.01 sec)
+
+
+SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX(email,'@',-1),'.',1) AS domain
+FROM website_campain;
++---------+
+| domain  |
++---------+
+| me      |
+| yahoo   |
+| gmail   |
+| hotmail |
++---------+
+4 rows in set (0.00 sec)
+
+
+SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(email,'@',-1),'.',1) AS domain
+FROM website_campain
+GROUP BY domain HAVING COUNT(*) = (
+									SELECT COUNT(*) AS domain
+									FROM website_campain
+									GROUP BY (SUBSTRING_INDEX(SUBSTRING_INDEX(email,'@',-1),'.',1))
+									ORDER BY domain
+									DESC limit 1
+									);
++--------+
+| domain |
++--------+
+| me     |
+| yahoo  |
++--------+
+2 rows in set (0.01 sec)

@@ -1,0 +1,36 @@
+mysql> CREATE TABLE website_campain(
+    -> email VARCHAR(30),
+    -> phone INT(11),
+    -> city VARCHAR(15),
+    -> PRIMARY KEY (email)
+    -> );
+
+
+mysql> DESC website_campain;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| email | varchar(30) | NO   | PRI |         |       |
+| phone | int(11)     | YES  |     | NULL    |       |
+| city  | varchar(15) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+
+
+mysql> LOAD DATA INFILE 'data.txt' INTO TABLE website_campain;
+
+mysql> SELECT * FROM website_campain limit 10;
++----------------------+---------+----------+
+| email                | phone   | city     |
++----------------------+---------+----------+
+| 01433ed@me.com       | 9814366 |  Chennai |
+| 0156d61@yahoo.com    | 9817645 |  Delhi   |
+| 0263273@gmail.com    | 9818804 |  Lucknow |
+| 0279385@me.com       |  985887 |  Lucknow |
+| 02b9449@yahoo.com    | 9831869 |  Delhi   |
+| 042460b@yahoo.com    | 9822336 |  Lucknow |
+| 0467a86@hotmail.com  |  981977 |  Chennai |
+| 07f163e@yahoo.com    | 9816708 |  Chennai |
+| 091b847@gmail.com    | 9813008 |  Lucknow |
+| 0a09b8c@me.com       | 9829795 |  Lucknow |
++----------------------+---------+----------+
+10 rows in set (0.00 sec)
