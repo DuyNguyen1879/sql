@@ -44,27 +44,28 @@ mysql> SELECT article,COUNT(*) AS num FROM comments GROUP BY article HAVING
 
 #using left join =
 
-SELECT c.article, a.category FROM comments AS c LEFT JOIN articles AS a ON c.article = a.article GROUP BY article
-    -> HAVING count(user) = count(distinct user)
-    -> ;
-+-----------+----------+
-| article   | category |
-+-----------+----------+
-| india won | sports   |
-+-----------+----------+
-1 row in set (0.00 sec)
-
+mysql> SELECT a.article FROM articles AS a LEFT JOIN comments AS c ON c.article = a.article GROUP BY a.article HAVING COUNT(user) = COUNT(DISTINCT user);
++-----------------+
+| article         |
++-----------------+
+| india won       |
+| overspeed kills |
+| sachin retired  |
++-----------------+
+3 rows in set (0.00 sec)
 
 
 #using group by = 
 
-mysql> SELECT article FROM comments GROUP BY article HAVING COUNT(user) = COUNT(distinct user);
-+-----------+
-| article   |
-+-----------+
-| india won |
-+-----------+
-1 row in set (0.00 sec)
+mysql> SELECT article FROM articles WHERE article NOT IN (SELECT article FROM comments GROUP BY article HAVING COUNT(user) != COUNT(distinct user));
++-----------------+
+| article         |
++-----------------+
+| overspeed kills |
+| sachin retired  |
+| india won       |
++-----------------+
+3 rows in set (0.00 sec)
 
 
 
