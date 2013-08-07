@@ -20,7 +20,7 @@ mysql> SELECT DISTINCT s.location FROM sandwiches AS s, tastes AS t  WHERE s.fil
 
 
 
-mysql> SELECT location ,GROUP_CONCAT(DISTINCT name) FROM sandwiches,tastes GROUP BY location;
+mysql> SELECT location ,GROUP_CONCAT(DISTINCT name) AS people, COUNT(DISTINCT name) FROM sandwiches,tastes GROUP BY location;
 +-----------+-----------------------------+
 | location  | GROUP_CONCAT(DISTINCT name) |
 +-----------+-----------------------------+
