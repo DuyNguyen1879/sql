@@ -20,13 +20,14 @@ mysql> SELECT DISTINCT s.location FROM sandwiches AS s, tastes AS t  WHERE s.fil
 
 
 
-mysql> SELECT location ,GROUP_CONCAT(DISTINCT name) AS people, COUNT(DISTINCT name) FROM sandwiches,tastes GROUP BY location;
-+-----------+-----------------------------+
-| location  | GROUP_CONCAT(DISTINCT name) |
-+-----------+-----------------------------+
-| buttery   | brown,jones,green           |
-| lincoln   | brown,jones,green           |
-| o'neill's | jones,green,brown           |
-| old nag   | green,brown,jones           |
-+-----------+-----------------------------+
+mysql> SELECT location ,COUNT(distinct name) FROM sandwiches NATURAL JOIN tastes GROUP BY location;
++-----------+----------------------+
+| location  | COUNT(distinct name) |
++-----------+----------------------+
+| buttery   |                    3 |
+| lincoln   |                    2 |
+| o'neill's |                    3 |
+| old nag   |                    2 |
++-----------+----------------------+
 4 rows in set (0.00 sec)
+
