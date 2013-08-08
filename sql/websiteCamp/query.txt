@@ -32,12 +32,12 @@ SELECT DISTINCT city
 FROM website_campain
 GROUP BY(city)
 HAVING count(email) = (
-						SELECT COUNT(email) AS totalCount
-						FROM website_campain
-						GROUP BY(city)
-						ORDER BY totalCount
-						DESC LIMIT 1
-						);
+SELECT COUNT(email) AS totalCount
+FROM website_campain
+GROUP BY(city)
+ORDER BY totalCount
+DESC LIMIT 1
+);
 						
 +----------+
 | city     |
@@ -47,7 +47,7 @@ HAVING count(email) = (
 1 row in set (0.01 sec)
 
 
-SELECT DISTINCT SUBSTRING_INDEX(SUBSTRING_INDEX(email,'@',-1),'.',1) AS domain
+SELECT DISTINCT SUBSTRING(email,9) AS domain
 FROM website_campain;
 +---------+
 | domain  |
@@ -60,15 +60,15 @@ FROM website_campain;
 4 rows in set (0.00 sec)
 
 
-SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(email,'@',-1),'.',1) AS domain
+SELECT SUBSTRING(email,9) AS domain
 FROM website_campain
 GROUP BY domain HAVING COUNT(*) = (
-									SELECT COUNT(*) AS domain
-									FROM website_campain
-									GROUP BY (SUBSTRING_INDEX(SUBSTRING_INDEX(email,'@',-1),'.',1))
-									ORDER BY domain
-									DESC limit 1
-									);
+SELECT COUNT(*) AS domain
+FROM website_campain
+GROUP BY (SUBSTRING(email,9))
+ORDER BY domain
+DESC limit 1
+);
 +--------+
 | domain |
 +--------+
