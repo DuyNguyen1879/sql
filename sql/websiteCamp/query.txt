@@ -47,32 +47,32 @@ DESC LIMIT 1
 1 row in set (0.01 sec)
 
 
-SELECT DISTINCT SUBSTRING(email,9) AS domain
+SELECT DISTINCT SUBSTRING_INDEX(email,'@',-1) AS domain
 FROM website_campain;
-+---------+
-| domain  |
-+---------+
-| me      |
-| yahoo   |
-| gmail   |
-| hotmail |
-+---------+
++--------------+
+| domain       |
++--------------+
+| me.com       |
+| yahoo.com    |
+| gmail.com    |
+| hotmail.com  |
++--------------+
 4 rows in set (0.00 sec)
 
 
-SELECT SUBSTRING(email,9) AS domain
+SELECT SUBSTRING_INDEX(email,'@',-1) AS domain
 FROM website_campain
 GROUP BY domain HAVING COUNT(*) = (
 SELECT COUNT(*) AS domain
 FROM website_campain
-GROUP BY (SUBSTRING(email,9))
+GROUP BY (SUBSTRING_INDEX(email,'@',-1))
 ORDER BY domain
 DESC limit 1
 );
-+--------+
-| domain |
-+--------+
-| me     |
-| yahoo  |
-+--------+
-2 rows in set (0.01 sec)
++--------------+
+| domain       |
++--------------+
+| me.com       |
+| yahoo.com    |
++--------------+
+2 rows in set (0.00 sec)
