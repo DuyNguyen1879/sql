@@ -2,7 +2,7 @@ mysql> DESC employees;
 +-------+-------------+------+-----+---------+----------------+
 | Field | Type        | Null | Key | Default | Extra          |
 +-------+-------------+------+-----+---------+----------------+
-| id    | tinyint(4)  | NO   | PRI | NULL    | auto_increment |
+| id    | int(4)      | NO   | PRI | NULL    | auto_increment |
 | name  | varchar(10) | YES  |     | NULL    |                |
 +-------+-------------+------+-----+---------+----------------+
 2 rows in set (0.01 sec)
@@ -12,7 +12,7 @@ mysql> DESC projects;
 +-------+------------+------+-----+---------+----------------+
 | Field | Type       | Null | Key | Default | Extra          |
 +-------+------------+------+-----+---------+----------------+
-| id    | tinyint(4) | NO   | PRI | NULL    | auto_increment |
+| id    | int(4)     | NO   | PRI | NULL    | auto_increment |
 | name  | varchar(3) | YES  |     | NULL    |                |
 +-------+------------+------+-----+---------+----------------+
 2 rows in set (0.00 sec)
@@ -22,7 +22,7 @@ mysql> DESC technologies;
 +-------+-------------+------+-----+---------+----------------+
 | Field | Type        | Null | Key | Default | Extra          |
 +-------+-------------+------+-----+---------+----------------+
-| id    | tinyint(4)  | NO   | PRI | NULL    | auto_increment |
+| id    | int(4)      | NO   | PRI | NULL    | auto_increment |
 | name  | varchar(20) | YES  |     | NULL    |                |
 +-------+-------------+------+-----+---------+----------------+
 2 rows in set (0.00 sec)
@@ -32,7 +32,7 @@ mysql> DESC proj_tech;
 +---------+------------+------+-----+---------+-------+
 | Field   | Type       | Null | Key | Default | Extra |
 +---------+------------+------+-----+---------+-------+
-| p_id    | tinyint(4) | YES  | MUL | NULL    |       |
+| p_id    | int(4)     | YES  | MUL | NULL    |       |
 | tech_id | tinyint(4) | YES  | MUL | NULL    |       |
 +---------+------------+------+-----+---------+-------+
 2 rows in set (0.00 sec)
@@ -42,7 +42,7 @@ mysql> DESC past_proj;
 +--------+------------+------+-----+---------+-------+
 | Field  | Type       | Null | Key | Default | Extra |
 +--------+------------+------+-----+---------+-------+
-| p_id   | tinyint(4) | YES  | MUL | NULL    |       |
+| p_id   | int(4)     | YES  | MUL | NULL    |       |
 | emp_id | tinyint(4) | YES  | MUL | NULL    |       |
 +--------+------------+------+-----+---------+-------+
 2 rows in set (0.00 sec)
@@ -52,7 +52,79 @@ mysql> DESC present_proj;
 +--------+------------+------+-----+---------+-------+
 | Field  | Type       | Null | Key | Default | Extra |
 +--------+------------+------+-----+---------+-------+
-| p_id   | tinyint(4) | YES  | MUL | NULL    |       |
+| p_id   | int(4)     | YES  | MUL | NULL    |       |
 | emp_id | tinyint(4) | YES  | MUL | NULL    |       |
 +--------+------------+------+-----+---------+-------+
 2 rows in set (0.00 sec)
+
+
+mysql> select * from past_proj;
++------+--------+
+| p_id | emp_id |
++------+--------+
+|    1 |      1 |
+|    2 |      1 |
+|    3 |      1 |
+|    1 |      2 |
+|    3 |      2 |
+|    7 |      2 |
+|    9 |      2 |
+|    1 |      3 |
+|    2 |      3 |
+|    8 |      3 |
+|    9 |      3 |
+|    1 |      4 |
+|    2 |      4 |
+|    4 |      4 |
++------+--------+
+14 rows in set (0.00 sec)
+
+mysql> select * from present_proj;
++------+--------+
+| p_id | emp_id |
++------+--------+
+|    6 |      1 |
+|    5 |      4 |
+|    6 |      4 |
++------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select * from technologies;
++----+------------+
+| id | name       |
++----+------------+
+|  1 | html       |
+|  2 | javascript |
+|  3 | ruby       |
+|  4 | rails      |
+|  5 | ios        |
+|  6 | android    |
++----+------------+
+6 rows in set (0.00 sec)
+
+mysql> select * from projects;
++----+------+
+| id | name |
++----+------+
+|  1 | p1   |
+|  2 | p2   |
+|  3 | p3   |
+|  4 | p4   |
+|  5 | p5   |
+|  6 | p6   |
+|  7 | p7   |
+|  8 | p8   |
+|  9 | p9   |
++----+------+
+9 rows in set (0.00 sec)
+
+mysql> select * from employees;
++----+--------+
+| id | name   |
++----+--------+
+|  1 | user a |
+|  2 | user b |
+|  3 | user c |
+|  4 | user d |
++----+--------+
+4 rows in set (0.00 sec)

@@ -24,7 +24,7 @@ mysql> SELECT e.name FROM employees e WHERE e.id IN (SELECT DISTINCT emp_id FROM
 
 
 mysql> SELECT distinct t.name FROM technologies t JOIN  proj_tech pt ON t.id = pt.tech_id NATURAL JOIN past_proj where  emp_id in (select e.id from employees e  where e.name = "user b") group by t.name having count(t.name) >= 3;
-Empty set (0.00 sec)
+Empty set (0.00 sec);
 
 
 
