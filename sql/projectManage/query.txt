@@ -1,12 +1,13 @@
-SELECT name FROM employees
-WHERE name NOT IN
-(SELECT DISTINCT e.NAME
-FROM employees AS e
-JOIN
-project_status AS p
-ON e.id = p.emp_id
-WHERE p.status = 1
-);
+select emp2.name
+from employees emp1
+join
+project_status ps
+on emp1.id = ps.emp_id
+and status = 1
+right join
+employees emp2
+on emp1.id = emp2.id
+where emp1.id is null;
 
 +--------+
 | NAME   |
@@ -17,19 +18,20 @@ WHERE p.status = 1
 2 rows in set (0.00 sec)
 
 
-SELECT e.name FROM employees e
-WHERE e.id IN
-(SELECT DISTINCT emp_id
+SELECT distinct e.name
 FROM technologies t
 JOIN
 proj_tech pt
 ON t.id = pt.tech_id
 NATURAL JOIN
 project_status pp
+JOIN
+employees e
+ON e.id = pp.emp_id
 WHERE t.name IN('html','javascript','ios')
 GROUP BY emp_id
 HAVING COUNT(DISTINCT t.name) >=3
-);
+;
 
 +--------+
 | name   |
@@ -58,11 +60,9 @@ having count(t.id) >=3 ;
 Empty set (0.00 sec)
 
 
-start transaction;
-Query OK, 0 rows affected (0.00 sec)
 
-select count(*) into @max_count
-from employees e
+
+select e.name from employees e
 join
 project_status ps
 on e.id = ps.emp_id
@@ -72,12 +72,8 @@ join
 technologies t on pt.tech_id = t.id
 where t.name = "android" and ps.status = 0
 group by e.id
-order by count(*)
-desc limit 1;
-
-Query OK,x 1 row affected (0.00 sec)
-
-select e.name from employees e
+having count(*) = (
+select count(*) from employees e
 join
 project_status ps
 on e.id = ps.emp_id
@@ -86,9 +82,11 @@ proj_tech pt
 join
 technologies t
 on pt.tech_id = t.id
-where t.name = "android" and ps.status = 0
+where t.name = "android"
 group by e.id
-HAVING count(*) = @max_count; 
+order by count(*)
+desc limit 1
+);
 
 +--------+
 | name   |
@@ -97,3 +95,5 @@ HAVING count(*) = @max_count;
 +--------+
 1 row in set (0.00 sec)
 
+commit;
+Query OK, 0 rows affected (0.00 sec)
