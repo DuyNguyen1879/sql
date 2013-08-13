@@ -1,48 +1,48 @@
-DESC employees;
+mysql> DESC employees;
 +-------+-------------+------+-----+---------+----------------+
 | Field | Type        | Null | Key | Default | Extra          |
 +-------+-------------+------+-----+---------+----------------+
-| id    | bigint(20)  | NO   | PRI | NULL    | auto_increment |
-| name  | varchar(15) | YES  |     | NULL    |                |
+| id    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| name  | varchar(35) | YES  |     | NULL    |                |
 +-------+-------------+------+-----+---------+----------------+
 2 rows in set (0.00 sec)
 
-DESC projects;
+mysql> DESC projects;
 +-------+-------------+------+-----+---------+----------------+
 | Field | Type        | Null | Key | Default | Extra          |
 +-------+-------------+------+-----+---------+----------------+
-| id    | bigint(20)  | NO   | PRI | NULL    | auto_increment |
-| name  | varchar(15) | YES  |     | NULL    |                |
+| id    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| name  | varchar(45) | YES  |     | NULL    |                |
 +-------+-------------+------+-----+---------+----------------+
 2 rows in set (0.00 sec)
 
-DESC technologies;
+mysql> DESC technologies;
 +-------+-------------+------+-----+---------+----------------+
 | Field | Type        | Null | Key | Default | Extra          |
 +-------+-------------+------+-----+---------+----------------+
-| id    | bigint(20)  | NO   | PRI | NULL    | auto_increment |
-| name  | varchar(20) | YES  |     | NULL    |                |
+| id    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| name  | varchar(35) | YES  |     | NULL    |                |
 +-------+-------------+------+-----+---------+----------------+
 2 rows in set (0.00 sec)
 
-DESC proj_tech;
-+---------+------------+------+-----+---------+-------+
-| Field   | Type       | Null | Key | Default | Extra |
-+---------+------------+------+-----+---------+-------+
-| p_id    | bigint(20) | YES  | MUL | NULL    |       |
-| tech_id | bigint(20) | YES  | MUL | NULL    |       |
-+---------+------------+------+-----+---------+-------+
+mysql> DESC proj_tech;
++---------+---------+------+-----+---------+-------+
+| Field   | Type    | Null | Key | Default | Extra |
++---------+---------+------+-----+---------+-------+
+| p_id    | int(11) | YES  | MUL | NULL    |       |
+| tech_id | int(11) | YES  | MUL | NULL    |       |
++---------+---------+------+-----+---------+-------+
 2 rows in set (0.00 sec)
 
-DESC project_status;
+mysql> DESC project_status;
 +--------+------------+------+-----+---------+-------+
 | Field  | Type       | Null | Key | Default | Extra |
 +--------+------------+------+-----+---------+-------+
-| p_id   | bigint(20) | YES  | MUL | NULL    |       |
-| emp_id | bigint(20) | YES  | MUL | NULL    |       |
-| status | tinyint(4) | YES  |     | NULL    |       |
+| p_id   | int(11)    | YES  | MUL | NULL    |       |
+| emp_id | int(11)    | YES  | MUL | NULL    |       |
+| status | tinyint(1) | YES  |     | NULL    |       |
 +--------+------------+------+-----+---------+-------+
-3 rows in set (0.01 sec)
+3 rows in set (0.00 sec)
 
 SELECT * FROM project_status;
 +------+--------+--------+
