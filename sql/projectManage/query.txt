@@ -95,5 +95,12 @@ desc limit 1
 +--------+
 1 row in set (0.00 sec)
 
+<<<<<<< HEAD
 commit;
 Query OK, 0 rows affected (0.00 sec)
+=======
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+
+>>>>>>> 5bbf8afb72780909d074224a4fee6f7ffdb70c88
