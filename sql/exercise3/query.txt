@@ -19,7 +19,7 @@ SELECT a.name, GROUP_CONCAT(c.description) AS comments FROM articles a JOIN comm
 2 rows in set (0.00 sec)
 
 
-mysql> SELECT a.name FROM articles AS a LEFT JOIN comments AS c ON a.id = c.article_id WHERE c.description IS NULL;
+SELECT a.name FROM articles AS a LEFT JOIN comments AS c ON a.id = c.article_id WHERE c.description IS NULL;
 +-----------------+
 | name            |
 +-----------------+
@@ -30,13 +30,13 @@ mysql> SELECT a.name FROM articles AS a LEFT JOIN comments AS c ON a.id = c.arti
 
 
 
-SELECT a.name, COUNT(*) AS num FROM comments c JOIN articles a ON a.id = c.article_id GROUP BY c.article_id HAVING 
-num = (SELECT COUNT(*) FROM comments GROUP BY article_id ORDER BY COUNT(*) DESC LIMIT 1);
-+----------------+-----+
-| name           | num |
-+----------------+-----+
-| congress loose |   3 |
-+----------------+-----+
+SELECT a.name, COUNT(*) AS "number of comments" FROM comments c JOIN articles a ON a.id = c.article_id GROUP BY c.article_id HAVING 
+count(*) = (SELECT COUNT(*) FROM comments GROUP BY article_id ORDER BY COUNT(*) DESC LIMIT 1);
++----------------+--------------------+
+| name           | number of comments |
++----------------+--------------------+
+| congress loose |                  3 |
++----------------+--------------------+
 1 rows in set (0.00 sec)
 
 
