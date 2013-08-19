@@ -1,4 +1,4 @@
-mysql> SELECT article FROM articles WHERE author = 'user3';
+SELECT a.name FROM articles a JOIN users u ON u.id = a.author_id WHERE u.name = "user3";
 +----------------+
 | article        |
 +----------------+
@@ -9,7 +9,7 @@ mysql> SELECT article FROM articles WHERE author = 'user3';
 
 
 
-mysql> SELECT article, GROUP_CONCAT(comment) AS comments FROM articles NATURAL JOIN comments  WHERE author = 'user3' GROUP BY article;
+SELECT a.name, GROUP_CONCAT(c.description) AS comments FROM articles a JOIN comments c ON a.id = c.article_id JOIN users u ON a.author_id = u.id WHERE u.name = "user3"  GROUP BY a.id;
 +----------------+-------------------------------------------------+
 | article        | comments                                        |
 +----------------+-------------------------------------------------+
@@ -19,11 +19,9 @@ mysql> SELECT article, GROUP_CONCAT(comment) AS comments FROM articles NATURAL J
 2 rows in set (0.00 sec)
 
 
-
-
-mysql> SELECT a.article FROM articles AS a LEFT JOIN comments AS c ON a.article = c.article WHERE c.comment IS NULL;
+mysql> SELECT a.name FROM articles AS a LEFT JOIN comments AS c ON a.id = c.article_id WHERE c.description IS NULL;
 +-----------------+
-| article         |
+| name            |
 +-----------------+
 | overspeed kills |
 | sachin retired  |
@@ -32,10 +30,10 @@ mysql> SELECT a.article FROM articles AS a LEFT JOIN comments AS c ON a.article 
 
 
 
-mysql> SELECT article,COUNT(*) AS num FROM comments GROUP BY article HAVING 
-    -> num = (SELECT COUNT(*) FROM comments GROUP BY article ORDER BY COUNT(*) DESC LIMIT 1);
+SELECT a.name, COUNT(*) AS num FROM comments c JOIN articles a ON a.id = c.article_id GROUP BY c.article_id HAVING 
+num = (SELECT COUNT(*) FROM comments GROUP BY article_id ORDER BY COUNT(*) DESC LIMIT 1);
 +----------------+-----+
-| article        | num |
+| name           | num |
 +----------------+-----+
 | congress loose |   3 |
 +----------------+-----+
@@ -44,7 +42,7 @@ mysql> SELECT article,COUNT(*) AS num FROM comments GROUP BY article HAVING
 
 #using left join =
 
-mysql> SELECT a.article FROM articles AS a LEFT JOIN comments AS c ON c.article = a.article GROUP BY a.article HAVING COUNT(user) = COUNT(DISTINCT user);
+SELECT a.name FROM articles AS a LEFT JOIN comments AS c ON c.article_id = a.id GROUP BY a.name HAVING COUNT(user_id) = COUNT(DISTINCT user_id);
 +-----------------+
 | article         |
 +-----------------+
@@ -57,15 +55,16 @@ mysql> SELECT a.article FROM articles AS a LEFT JOIN comments AS c ON c.article 
 
 #using group by = 
 
-mysql> SELECT article FROM articles WHERE article NOT IN (SELECT article FROM comments GROUP BY article HAVING COUNT(user) != COUNT(distinct user));
+SELECT a.name FROM articles a WHERE a.id NOT IN (SELECT c.article_id FROM comments c GROUP BY c.article_id HAVING COUNT(c.user_id) != COUNT(distinct c.user_id));
 +-----------------+
-| article         |
+| name            |
 +-----------------+
 | overspeed kills |
 | sachin retired  |
 | india won       |
 +-----------------+
 3 rows in set (0.00 sec)
+
 
 
 
